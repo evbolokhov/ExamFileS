@@ -315,10 +315,10 @@ class TFindFileThread(QtCore.QThread):
                     if (ext[0] == '*.*' or os.path.splitext(f.name)[1].lower() in ext) and self.ext_flag:
                         add_item()
                     # проверка отбора по сигнатуре (байтовой строке)
-                    if self.flag_signatue and find_signature():
+                    if self.flag_signatue  and find_signature():
                         add_item()
                     # проверка отбора по ключевой строке
-                    if self.flag_keyword and find_string_in_file():
+                    if self.flag_keyword  and find_string_in_file():
                         add_item()
 
                 if not (self.Flag):
