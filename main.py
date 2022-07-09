@@ -34,7 +34,7 @@ class Form_backend(QtWidgets.QMainWindow):
 
         self.errorMsg = QtWidgets.QErrorMessage(self)
 
-        # установка параметров для treeView
+        # установка параметров для treeView test
         model = QtWidgets.QFileSystemModel()
         model.setRootPath(QtCore.QDir.currentPath())
         self.ui.treeView.setModel(model)
