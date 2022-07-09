@@ -57,7 +57,6 @@ class Form_backend(QtWidgets.QMainWindow):
         self.findfileThread = TFindFileThread()
         self.findfileThread.infoSignal.connect(self.addItemToResultTable)
         self.findfileThread.statusSignal.connect(self.showProcessInStatusBar)
-        self.findfileThread.finished.connect(self.stopSearchButtonClick)
 
     def changeText(self):
         """
