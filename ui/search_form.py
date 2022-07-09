@@ -16,17 +16,17 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QHBoxLayout,
-    QHeaderView, QLabel, QLineEdit, QMainWindow,
-    QMenu, QMenuBar, QPushButton, QSizePolicy,
-    QSpacerItem, QSplitter, QStatusBar, QTableView,
-    QTreeView, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QHBoxLayout, QHeaderView,
+    QLabel, QLineEdit, QMainWindow, QMenu,
+    QMenuBar, QPushButton, QSizePolicy, QSpacerItem,
+    QSplitter, QStatusBar, QTableView, QTreeView,
+    QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(974, 662)
+        MainWindow.resize(1041, 893)
         self.exit_action = QAction(MainWindow)
         self.exit_action.setObjectName(u"exit_action")
         self.about_action = QAction(MainWindow)
@@ -54,20 +54,20 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.addWidget(self.selectedDir_lineEdit)
 
         self.splitter.addWidget(self.layoutWidget)
-        self.widget = QWidget(self.splitter)
-        self.widget.setObjectName(u"widget")
-        self.verticalLayout_2 = QVBoxLayout(self.widget)
+        self.layoutWidget1 = QWidget(self.splitter)
+        self.layoutWidget1.setObjectName(u"layoutWidget1")
+        self.verticalLayout_2 = QVBoxLayout(self.layoutWidget1)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.settingSearchLabel = QLabel(self.widget)
+        self.settingSearchLabel = QLabel(self.layoutWidget1)
         self.settingSearchLabel.setObjectName(u"settingSearchLabel")
         self.settingSearchLabel.setMaximumSize(QSize(16777215, 15))
 
         self.verticalLayout.addWidget(self.settingSearchLabel)
 
-        self.chooseSettingComboBox = QComboBox(self.widget)
+        self.chooseSettingComboBox = QComboBox(self.layoutWidget1)
         self.chooseSettingComboBox.addItem("")
         self.chooseSettingComboBox.addItem("")
         self.chooseSettingComboBox.addItem("")
@@ -75,40 +75,22 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.chooseSettingComboBox)
 
-        self.entringStringLabel = QLabel(self.widget)
+        self.entringStringLabel = QLabel(self.layoutWidget1)
         self.entringStringLabel.setObjectName(u"entringStringLabel")
         self.entringStringLabel.setMaximumSize(QSize(16777215, 15))
 
         self.verticalLayout.addWidget(self.entringStringLabel)
 
-        self.entringStringlineEdit = QLineEdit(self.widget)
+        self.entringStringlineEdit = QLineEdit(self.layoutWidget1)
         self.entringStringlineEdit.setObjectName(u"entringStringlineEdit")
 
         self.verticalLayout.addWidget(self.entringStringlineEdit)
-
-        self.recursionSearchcheckBox = QCheckBox(self.widget)
-        self.recursionSearchcheckBox.setObjectName(u"recursionSearchcheckBox")
-
-        self.verticalLayout.addWidget(self.recursionSearchcheckBox)
 
 
         self.verticalLayout_2.addLayout(self.verticalLayout)
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.startSearchpushButton = QPushButton(self.widget)
-        self.startSearchpushButton.setObjectName(u"startSearchpushButton")
-        self.startSearchpushButton.setMinimumSize(QSize(150, 80))
-        self.startSearchpushButton.setMaximumSize(QSize(16777215, 80))
-
-        self.horizontalLayout.addWidget(self.startSearchpushButton)
-
-        self.stopSearchpushButton = QPushButton(self.widget)
-        self.stopSearchpushButton.setObjectName(u"stopSearchpushButton")
-        self.stopSearchpushButton.setMinimumSize(QSize(150, 80))
-
-        self.horizontalLayout.addWidget(self.stopSearchpushButton)
-
 
         self.verticalLayout_2.addLayout(self.horizontalLayout)
 
@@ -116,7 +98,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addItem(self.verticalSpacer)
 
-        self.splitter.addWidget(self.widget)
+        self.splitter.addWidget(self.layoutWidget1)
 
         self.verticalLayout_4.addWidget(self.splitter)
 
@@ -125,10 +107,23 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_4.addWidget(self.tableView)
 
+        self.startSearchpushButton = QPushButton(self.centralwidget)
+        self.startSearchpushButton.setObjectName(u"startSearchpushButton")
+        self.startSearchpushButton.setMinimumSize(QSize(150, 80))
+        self.startSearchpushButton.setMaximumSize(QSize(16777215, 80))
+
+        self.verticalLayout_4.addWidget(self.startSearchpushButton)
+
+        self.stopSearchpushButton = QPushButton(self.centralwidget)
+        self.stopSearchpushButton.setObjectName(u"stopSearchpushButton")
+        self.stopSearchpushButton.setMinimumSize(QSize(150, 80))
+
+        self.verticalLayout_4.addWidget(self.stopSearchpushButton)
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.mainMenumenubar = QMenuBar(MainWindow)
         self.mainMenumenubar.setObjectName(u"mainMenumenubar")
-        self.mainMenumenubar.setGeometry(QRect(0, 0, 974, 24))
+        self.mainMenumenubar.setGeometry(QRect(0, 0, 1041, 22))
         self.file_menu = QMenu(self.mainMenumenubar)
         self.file_menu.setObjectName(u"file_menu")
         self.help_menu = QMenu(self.mainMenumenubar)
@@ -158,7 +153,6 @@ class Ui_MainWindow(object):
         self.chooseSettingComboBox.setItemText(2, QCoreApplication.translate("MainWindow", u"\u043f\u043e \u0441\u0442\u0440\u043e\u043a\u0435", None))
 
         self.entringStringLabel.setText(QCoreApplication.translate("MainWindow", u"\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0434\u0430\u043d\u043d\u044b\u0435 \u0434\u043b\u044f \u043f\u043e\u0438\u0441\u043a\u0430 ", None))
-        self.recursionSearchcheckBox.setText(QCoreApplication.translate("MainWindow", u"\u0420\u0435\u043a\u0443\u0440\u0441\u0438\u0432\u043d\u044b\u0439 \u043f\u043e\u0438\u0441\u043a", None))
         self.startSearchpushButton.setText(QCoreApplication.translate("MainWindow", u"\u041d\u0430\u0447\u0430\u0442\u044c \u043f\u043e\u0438\u0441\u043a", None))
         self.stopSearchpushButton.setText(QCoreApplication.translate("MainWindow", u"\u041e\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u044c", None))
         self.file_menu.setTitle(QCoreApplication.translate("MainWindow", u"\u0424\u0430\u0439\u043b", None))

@@ -22,7 +22,7 @@ class Form_backend(QtWidgets.QMainWindow):
 
     def initUi(self):
         """
-        Инициализация начальных значений пользовательского интефейса
+        Инициализация начальных значений для пользовательского интефейса
         """
         self.setWindowTitle('Поиск файлов')
         self.ui.stopSearchpushButton.setEnabled(False)
@@ -34,7 +34,7 @@ class Form_backend(QtWidgets.QMainWindow):
 
         self.errorMsg = QtWidgets.QErrorMessage(self)
 
-        # установка параметров для treeView test
+        # установка параметров для treeView
         model = QtWidgets.QFileSystemModel()
         model.setRootPath(QtCore.QDir.currentPath())
         self.ui.treeView.setModel(model)
@@ -48,7 +48,6 @@ class Form_backend(QtWidgets.QMainWindow):
         self.ui.chooseSettingComboBox.currentTextChanged.connect(self.changeText)
         self.ui.startSearchpushButton.clicked.connect(self.startSearchButtonClick)
         self.ui.stopSearchpushButton.clicked.connect(self.stopSearchButtonClick)
-        self.ui.tableView.doubleClicked.connect(self.table_view_dbl_click)
         self.ui.treeView.clicked.connect(self.changeDir)
 
     def initThreads(self):
@@ -94,7 +93,7 @@ class Form_backend(QtWidgets.QMainWindow):
         # если не выбрана директория или не заданы условия поска
         if not self.ui.entringStringlineEdit.text().split() or not self.ui.selectedDir_lineEdit.text():
             return False
-        self.findfileThread.recursion = self.ui.recursionSearchcheckBox.checkState()
+        #self.findfileThread.recursion = self.ui.recursionSearchcheckBox.checkState()
         self.findfileThread.startDir = self.ui.selectedDir_lineEdit.text()
         self.findfileThread.Flag = True
         if self.kind_of_search == 1:
@@ -147,7 +146,7 @@ class Form_backend(QtWidgets.QMainWindow):
             self.ui.stopSearchpushButton.setEnabled(True)
             self.ui.chooseSettingComboBox.setEnabled(False)
             self.ui.entringStringlineEdit.setEnabled(False)
-            self.ui.recursionSearchcheckBox.setEnabled(False)
+            #self.ui.recursionSearchcheckBox.setEnabled(False)
             self.findfileThread.start()
             self.ui.tableView.setVisible(True)
             self.ui.statusbar.showMessage('Поиск начат')
@@ -160,7 +159,7 @@ class Form_backend(QtWidgets.QMainWindow):
         self.ui.stopSearchpushButton.setEnabled(False)
         self.ui.chooseSettingComboBox.setEnabled(True)
         self.ui.entringStringlineEdit.setEnabled(True)
-        self.ui.recursionSearchcheckBox.setEnabled(True)
+        #self.ui.recursionSearchcheckBox.setEnabled(True)
         self.findfileThread.Flag = False
         self.ui.statusbar.showMessage('Завершено')
 
@@ -192,111 +191,6 @@ class Form_backend(QtWidgets.QMainWindow):
         """
         self.ui.statusbar.showMessage(statStr)
 
-    def copySeelectedFiles(self):
-        """
-        копирование обнрауженных файлов с вызовом диалога для определения пути сохранения файлов
-        копируются только выделенные строки в таблице
-        """
-        dir_ = QtWidgets.QFileDialog.getExistingDirectory(self, "Выберите папку для сохранения")
-        if dir_ != '' :
-            listQModelIndex = self.ui.tableView.selectionModel().selectedIndexes()
-            for i in listQModelIndex:
-                # проверяем существование исходного файла
-                self.src = self.ui.tableView.model().index(i.row(), 0).data()
-                if os.path.isfile(self.src):
-                    self.dest = dir_+'/'+os.path.basename(self.src)
-                    # если файла не существует
-                    if not os.path.isfile(self.dest):
-                        shutil.copy(self.src, self.dest)
-                    else:
-                    # если файл с таким именем уже существует:
-                        msg = QtWidgets.QMessageBox()
-                        msg.setText(f'Файл {self.dest} уже существует?')
-                        msg.setInformativeText('Что же делать?')
-                        msg.setIcon(QtWidgets.QMessageBox.Information)
-                        rwButton = QtWidgets.QPushButton(msg)
-                        rwButton.setText('Перезаписать')
-                        rwButton.clicked.connect(rewrite)
-                        msg.addButton(rwButton, QtWidgets.QMessageBox.ActionRole)
-                        rnButton = QtWidgets.QPushButton(msg)
-                        rnButton.setText('Переименовать')
-                        rnButton.clicked.connect(rename)
-                        msg.addButton(rnButton, QtWidgets.QMessageBox.ActionRole)
-                        sButton = QtWidgets.QPushButton(msg)
-                        sButton.setText('Пропустить')
-                        #sButton.clicked.connect(pass)
-                        msg.addButton(sButton, QtWidgets.QMessageBox.ActionRole)
-                        msg.exec()
-                    #
-                    #
-                    #     while not os.path.isfile(dest):
-                    #         dest.replace('{}')
-            msbx = QtWidgets.QMessageBox()
-            msbx.setText('Завершено')
-            msbx.setStandardButtons(QtWidgets.QMessageBox.Ok)
-            msbx.setIcon(QtWidgets.QMessageBox.Information)
-            msbx.exec()
-
-    def rewrite(self) -> bool:
-        """
-        Копирование файла с перезаписью
-        :return: результат копировнаия (успех / неудача)
-        """
-        try:
-            shutil.copy(self.src, self.dest)
-            return True
-        except IOError as err:
-            self.errorMsg.showMessage(str(err))
-            return False
-
-    def rename(self) -> bool:
-        """
-        копирование с переименованием файла в приемнике
-        :return: результат копировнаия (успех / неудача)
-        """
-        j = 1
-        self.dest = self.dest + f'({j})'
-        while os.path.isfile(self.dest):
-            self.dest.replace(f'({j})', f'({j + 1})')
-            j += 1
-        return self.rewrite()
-
-    def show_preview_window(self, fname: str):
-        """
-        Открывает новое окно и выводит содержимое файла
-        :param fname: имя файла для отображения
-        """
-        if os.stat(fname).st_size < 10737410:  # 10 Mb
-            self.preview_w = PrevieWindow(fname)
-            self.preview_w.read_file()
-            self.preview_w.show()
-        else:
-            msg = QtWidgets.QMessageBox()
-            msg.setText("Размер файла более 10 Мб")
-            msg.setInformativeText("Я отказываюсь его открывать в предпросмотре")
-            msg.setStandardButtons(QtWidgets.QMessageBox.Ok)
-            msg.exec()
-
-    def contextMenuEvent(self, event: QtGui.QContextMenuEvent) -> None:
-        """
-        Добавление контекстного меню
-        """
-        contextMenu = QtWidgets.QMenu(self.ui.tableView)
-        copyAct = contextMenu.addAction("Копировать в ...")
-        openAct = contextMenu.addAction("Посмотреть содержимое")
-        action = contextMenu.exec(self.mapToGlobal(event.pos()))
-        if action == copyAct:
-            self.copySeelectedFiles()
-        elif action == openAct:
-            listQModelIndex = self.ui.tableView.selectionModel().selectedIndexes()
-            fname = self.ui.tableView.model().index(listQModelIndex[0].row(), 0).data()
-            self.show_preview_window(fname)
-
-    def table_view_dbl_click(self):
-        listQModelIndex = self.ui.tableView.selectionModel().selectedIndexes()
-        fname = self.ui.tableView.model().index(listQModelIndex[0].row(), 0).data()
-        self.show_preview_window(fname)
-
     def event(self, event: QtCore.QEvent) -> bool:
         """
         Обработка событий
@@ -320,17 +214,17 @@ class Form_backend(QtWidgets.QMainWindow):
 
 class TFindFileThread(QtCore.QThread):
     """
-    поток поиска файлов с рекурсией
+    поток поиска файлов
     """
     infoSignal = QtCore.Signal(list)
     statusSignal = QtCore.Signal(str)
 
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.finished = None
         self.Flag = None
         self.startDir = None
         self.ext = None
-        self.recursion = False
         self.ext_flag = False  # флаг отбора файлов по расширению
         self.flag_signatue = False  # флаг отбора по сигнатуре
         self.flag_keyword = False # флаг отбора файлов по ключевому слову
@@ -350,7 +244,7 @@ class TFindFileThread(QtCore.QThread):
 
     def run_fast_scandir(self, dir, ext) -> list:
         """
-        Рекурсивный поиск файлов
+        Поиск файлов
         :param dir: стартовая директория
         :param ext: расширения файлов
         :return: спискок найденных подкаталогов
@@ -434,11 +328,6 @@ class TFindFileThread(QtCore.QThread):
                 if not (self.Flag):
                     os.scandir().close()
                     break
-            if self.recursion:
-                for dir in list(subfolders):
-                    sf, f = self.run_fast_scandir(dir, ext)
-                    subfolders.extend(sf)
-                    files.extend(f)
         except PermissionError:
             print(f'Объект {dir} пропущен: недостаточно прав доступа')
             self.statusSignal.emit(f'Объект {dir} пропущен: недостаточно прав доступа')
