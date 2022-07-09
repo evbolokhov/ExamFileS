@@ -92,7 +92,6 @@ class Form_backend(QtWidgets.QMainWindow):
         # если не выбрана директория или не заданы условия поска
         if not self.ui.entringStringlineEdit.text().split() or not self.ui.selectedDir_lineEdit.text():
             return False
-        #self.findfileThread.recursion = self.ui.recursionSearchcheckBox.checkState()
         self.findfileThread.startDir = self.ui.selectedDir_lineEdit.text()
         self.findfileThread.Flag = True
         if self.kind_of_search == 1:
@@ -145,7 +144,6 @@ class Form_backend(QtWidgets.QMainWindow):
             self.ui.stopSearchpushButton.setEnabled(True)
             self.ui.chooseSettingComboBox.setEnabled(False)
             self.ui.entringStringlineEdit.setEnabled(False)
-            #self.ui.recursionSearchcheckBox.setEnabled(False)
             self.findfileThread.start()
             self.ui.tableView.setVisible(True)
             self.ui.statusbar.showMessage('Поиск начат')
@@ -158,7 +156,6 @@ class Form_backend(QtWidgets.QMainWindow):
         self.ui.stopSearchpushButton.setEnabled(False)
         self.ui.chooseSettingComboBox.setEnabled(True)
         self.ui.entringStringlineEdit.setEnabled(True)
-        #self.ui.recursionSearchcheckBox.setEnabled(True)
         self.findfileThread.Flag = False
         self.ui.statusbar.showMessage('Завершено')
 
@@ -318,10 +315,10 @@ class TFindFileThread(QtCore.QThread):
                     if (ext[0] == '*.*' or os.path.splitext(f.name)[1].lower() in ext) and self.ext_flag:
                         add_item()
                     # проверка отбора по сигнатуре (байтовой строке)
-                    if self.flag_signatue and find_signature():
+                    if self.flag_signatue  and find_signature():
                         add_item()
                     # проверка отбора по ключевой строке
-                    if self.flag_keyword and find_string_in_file():
+                    if self.flag_keyword  and find_string_in_file():
                         add_item()
 
                 if not (self.Flag):
